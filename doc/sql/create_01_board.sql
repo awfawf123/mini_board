@@ -18,8 +18,8 @@ INSERT INTO board_info(
 	,board_write_date
 	)
 VALUE(
-	'제목20'
-	,'내용20'
+	'제목25'
+	,'내용25'
 	,NOW()
 	);
 	
