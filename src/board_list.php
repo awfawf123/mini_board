@@ -8,9 +8,17 @@
     }else{
         $page_num = 1; //key가 없으면 1로 셋팅
     }
-    //5개행만 보여줌
+    //한 페이지당 5개행만 보여줌
     $limit_num = 5;
-
+    //보여줄 페이지 갯수
+    $page_block = 5;
+    $now_page = ceil($page_num/$page_block);
+    $s_page_num = ($now_page-1) * $page_block+1;
+    //데이터가 없을 경우
+    if($s_page_num<=0){
+        $s_page_num=1;
+    }
+    $e_page_num = $now_page * $page_block;
     //삭제 안 된 테이블 레코드 총 갯수 카운트
     $result_cnt = select_board_info_count();
 
@@ -37,21 +45,24 @@
         <link rel="stylesheet" href="css/board_list.css">
     </head>
     <body>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>게시글 번호</th>
-                    <th>게시글 제목</th>
-                    <th>작성일자</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
+        <div class="container">
+            <h1>To do List</h1>
+            <p><strong>총 게시글 수:<?php echo $result_cnt[0]["cnt"]?></strong></p>
+            <table class="table table-hover">
+                <thead class="table-primary">
+                    <tr>
+                        <th>게시글 번호</th>
+                        <th>게시글 제목</th>
+                        <th>작성일자</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
                     foreach ($result_paging as $record) {
-                ?>  
+                        ?>  
                     <tr>
                         <td><?php echo $record["board_no"]?></td>
-                        <td><?php echo $record["board_title"]?></td>
+                        <td><a href="board_update.php?board_no=<?php echo $record["board_no"] ?>&&page_num=<?php echo $page_num ?>"><?php echo $record["board_title"]?></a></td>
                         <td><?php echo $record["board_write_date"]?></td>
                     </tr>
                 <?php
@@ -60,9 +71,20 @@
             </tbody>
         </table>
         <div class="a_btn">
-        <?php for($i=1;$i<=$max_page_num; $i++){ //max 페이지 넘버 기준으로 루프 ?>
+            <?php if($page_num <=1){ ?>
+                <a href="board_list.php?page_num=1" class="btn-prev"></a>
+            <?php }else{ ?>
+                <a class="btn-prev" href="board_list.php?page_num=<?php echo $page_num-1 ?>"></a>
+            <?php } ?>
+        <?php for($i=$s_page_num;$i<=$e_page_num; $i++){ //max 페이지 넘버 기준으로 루프 ?>
             <a class="btn btn-outline-primary" href="board_list.php?page_num=<?php echo $i?>"><?php echo $i?></a>
         <?php } ?>
+        <?php if($page_num >=$max_page_num){ ?>
+                <a class="btn-next" href="board_list.php?page_num=<?php echo $max_page_num?>"></a>
+            <?php }else{ ?>
+                    <a class="btn-next" href="board_list.php?page_num=<?php echo $page_num+1?>"></a>
+            <?php } ?>
+        </div>
         </div>
     </body>
 </html>

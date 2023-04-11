@@ -3,8 +3,28 @@
     margin: 0;
     box-sizing: border-box;
 }
+.container{
+    position: relative;
+    width: 501px;
+    height: 905px;
+    margin:0 auto;
+    background-color: #fff;
+}
+.container h1{
+    color: rgb(56, 174, 197);
+    border-top: 2px solid rgb(147, 190, 239);
+    border-bottom: 2px solid rgb(147, 190, 239);
+    text-align: center;
+}
 table{
     text-align: center;
+}
+.table{
+    width: 25vw;
+    border-right: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    margin: 0 auto;
+    margin-bottom: 50px;
 }
 a{
     text-decoration: none;
@@ -12,4 +32,34 @@ a{
 }
 .a_btn{
     text-align: center;
+}
+.btn-prev{
+    position: relative;
+}
+.btn-prev::after{
+    content: '';
+    position: absolute;
+    display: block;
+    left: -35px;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-top: 3px solid rgb(56, 174, 197);
+    border-right: 3px solid rgb(56, 174, 197);
+    transform: rotate(225deg);
+}
+.btn-next{
+    position: relative;
+}
+.btn-next::after{
+    content: '';
+    position: absolute;
+    display: block;
+    left: 10px;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    border-top: 3px solid rgb(56, 174, 197);
+    border-right: 3px solid rgb(56, 174, 197);
+    transform: rotate(45deg);
 }

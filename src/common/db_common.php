@@ -67,6 +67,72 @@ function select_board_info_count(){
 
     return $result;
 }
+//----------------------------------
+//함수명 : select_board_info_no()
+//기능 : 게시판 특정 게시글 정보 검색
+//파라미터값 : INT &$param_no
+//리턴값 : Array $result
+//----------------------------------
+function select_board_info_no(&$param_no){
+    $sql=" SELECT board_no
+                ,board_title
+                ,board_contents
+            FROM board_info
+            WHERE board_no = :board_no ";
+
+    $arr_prepare = array(":board_no" => $param_no);
+
+    $conn = null;
+
+    try{
+        db_conn($conn);
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($arr_prepare);
+        $result = $stmt->fetchAll();
+    }catch(Exception $e){
+        return $e->getMessage();
+    }finally{
+        $conn = null;
+    }                
+  
+    return $result[0];
+}
+//----------------------------------
+//함수명 : update_board_info_no()
+//기능 : 게시판 특정 게시글 정보 수정
+//파라미터값 : Array &$param_arr
+//리턴값 : INT/STRING $result_cnt/ERRMSG
+//----------------------------------
+function update_board_info_no(&$param_arr){
+    $sql=" UPDATE board_info
+           SET board_title = :board_title
+               ,board_contents = :board_contents
+           WHERE board_no =:board_no
+           ";
+
+    $arr_prepare = array(":board_title" => $param_arr["board_title"]
+                         ,":board_contents" => $param_arr["board_contents"]
+                         ,":board_no" => $param_arr["board_no"]      
+                        );
+
+    $conn = null;
+
+    try{
+        db_conn($conn);
+        $conn->beginTransaction();  
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($arr_prepare);
+        $result_cnt = $stmt->rowCount(); // update한 행갯수 카운트
+        $conn->commit();
+    }catch(Exception $e){
+        //실패 할 경우 롤백
+        $conn->rollback();
+        return $e->getMessage();
+    }finally{
+        $conn = null;
+    }                
+    return $result_cnt;
+}
 
 // TODO : test Start
 // $arr = array("limit_num" => 5
@@ -74,4 +140,11 @@ function select_board_info_count(){
 //             );
 // $result = select_board_info_paging($arr);
 // print_r($result);
+// $i=1;
+// print_r(select_board_info_no($i));
+
+// $arr=array("board_no"=> 1
+//             ,"board_title"=> "test1"
+//             ,"board_contents"=> "testeste1");
+// echo update_board_info_no($arr);
 // TODO : test End
