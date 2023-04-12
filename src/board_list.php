@@ -9,7 +9,7 @@
         $page_num = 1; //key가 없으면 1로 셋팅
     }
     //한 페이지당 5개행만 보여줌
-    $limit_num = 5;
+    $limit_num = 10;
     //보여줄 페이지 갯수
     $page_block = 5;
     $now_page = ceil($page_num/$page_block);
@@ -46,8 +46,11 @@
     </head>
     <body>
         <div class="container">
-            <h1>To do List</h1>
-            <p><strong>총 게시글 수:<?php echo $result_cnt[0]["cnt"]?></strong></p>
+            <h1>게시판</h1>
+            <div class="sub-title">
+                <h2>List</h2>
+                    <span><a href="board_list.php"><img src="home.png" alt=""></a></span>
+            </div>
             <table class="table table-hover">
                 <thead class="table-primary">
                     <tr>
@@ -62,7 +65,7 @@
                         ?>  
                     <tr>
                         <td><?php echo $record["board_no"]?></td>
-                        <td><a href="board_update.php?board_no=<?php echo $record["board_no"] ?>&&page_num=<?php echo $page_num ?>"><?php echo $record["board_title"]?></a></td>
+                        <td><a href="board_detail.php?board_no=<?php echo $record["board_no"] ?>&page_num=<?php echo $page_num ?>"><?php echo $record["board_title"]?></a></td>
                         <td><?php echo $record["board_write_date"]?></td>
                     </tr>
                 <?php
@@ -86,5 +89,6 @@
             <?php } ?>
         </div>
         </div>
+       
     </body>
 </html>

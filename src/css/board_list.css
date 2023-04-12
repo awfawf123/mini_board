@@ -3,26 +3,46 @@
     margin: 0;
     box-sizing: border-box;
 }
+ul{
+    list-style: none;
+}
 .container{
-    position: relative;
-    width: 501px;
-    height: 905px;
+    width: 100vw;
+    height: 90vh;
     margin:0 auto;
     background-color: #fff;
 }
 .container h1{
     color: rgb(56, 174, 197);
+    padding: 10px 0;
     border-top: 2px solid rgb(147, 190, 239);
     border-bottom: 2px solid rgb(147, 190, 239);
     text-align: center;
 }
+.container .sub-title{
+    position: relative;
+    padding-bottom: 10px;
+}
+.container .sub-title h2{
+    color: rgb(147, 190, 239);
+}
+.container .sub-title span{
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.container .sub-title span a img{
+    width: 30px;
+}
 table{
     text-align: center;
 }
+table tr td{
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+}
 .table{
-    width: 25vw;
-    border-right: 1px solid #ccc;
-    border-left: 1px solid #ccc;
+    width: 65vw;
     margin: 0 auto;
     margin-bottom: 50px;
 }

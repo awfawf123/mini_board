@@ -30,7 +30,11 @@
         //update
         $result_cnt = update_board_info_no($arr_info);
         //update후 다시 select
-        $result_info = select_board_info_no($arr_post["board_no"]);
+        // $result_info = select_board_info_no($arr_post["board_no"]); //0412 delete
+
+        header("Location: board_detail.php?board_no=".$arr_post["board_no"]);
+        //redirect 했기 때문에 이후의 소스코드는 실행할 필요 없음
+        exit();
     }
 ?>
 <!DOCTYPE html>
@@ -40,50 +44,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>게시판</title>
-    <style>
-        a{
-            text-decoration: none;
-            color: #2e2e2e;
-        }
-        button {
-            margin: 15px;
-        }       
-        .w-btn {
-            position: relative;
-            border: none;
-            display: inline-block;
-            padding: 15px 30px;
-            border-radius: 15px;
-            border:3px solid #6aafe6;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.25s;
-        }
-        .w-btn:hover {
-            letter-spacing: 1px;
-            transform: scale(1.2);
-            cursor: pointer;
-        }
-        .w-btn:active {
-            transform: scale(1.5);
-        }
-        
-    </style>
+    <link rel="stylesheet" href="css/board_update.css">
 </head>
 <body>
     <form method="post" action="board_update.php">
-        <label for="bno">게시글 번호 :</label>
-        <input type="text" name="board_no" id="bno" value="<?php echo $result_info['board_no']?>" readonly>
-        <br>
-        <label for="title">게시글 제목 :</label>
-        <input type="text" name="board_title" id="title" value="<?php echo $result_info['board_title']?>">
-        <br>
-        <label for="contents">게시글 내용 :</label>
-        <input type="text" name="board_contents" id="contents" value="<?php echo $result_info['board_contents']?>">
+            <label for="bno">게시글 번호 :</label>
+            <input type="text" name="board_no" id="bno" value="<?php echo $result_info['board_no']?>" readonly>
+            <br>
+            <label for="title">게시글 제목 :</label>
+            <input type="text" name="board_title" id="title" value="<?php echo $result_info['board_title']?>">
+            <br>
+            <label for="contents">게시글 내용 :</label>
+            <input type="text" name="board_contents" id="contents" value="<?php echo $result_info['board_contents']?>">
         <br>
         <button class="w-btn w-btn-blue" type="submit">수정</button>
-        <button class="w-btn w-btn-blue"><a href="board_list.php?page_num=<?php echo $page_num?>">LIST</a></button>
+        <button class="w-btn w-btn-blue"><a href="board_detail.php?board_no=<?php echo $result_info["board_no"]?>">취소</a></button>
     </form>
+    <button class="w-btn w-btn-blue"><a href="board_list.php?page_num=<?php echo $page_num?>">LIST</a></button>
 </body>
 </html>

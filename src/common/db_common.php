@@ -77,8 +77,9 @@ function select_board_info_no(&$param_no){
     $sql=" SELECT board_no
                 ,board_title
                 ,board_contents
+                ,board_write_date 
             FROM board_info
-            WHERE board_no = :board_no ";
+            WHERE board_no = :board_no ";//0412 board_write_date 작성일 추가
 
     $arr_prepare = array(":board_no" => $param_no);
 
@@ -132,6 +133,38 @@ function update_board_info_no(&$param_arr){
         $conn = null;
     }                
     return $result_cnt;
+}
+//----------------------------------
+//함수명 : delete_board_info_no()
+//기능 : 게시판 특정 게시글 정보 삭제
+//파라미터값 : INT &$param_no
+//리턴값 : INT/STRING $result_cnt/ERRMSG
+//----------------------------------
+function delete_board_info_no(&$param_no){
+    $sql=" UPDATE board_info
+           SET board_del_flg = '1'
+               ,board_del_date = now()
+           WHERE board_no =:board_no";
+
+    $arr_prepare = array(":board_no" => $param_no);
+
+    $conn = null;
+
+    try{
+        db_conn($conn);
+        $conn->beginTransaction();  
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($arr_prepare);
+        $result = $stmt->rowCount();
+        $conn->commit();
+    }catch(Exception $e){
+        //실패 할 경우 롤백
+        $conn->rollback();
+        return $e->getMessage();
+    }finally{
+        $conn = null;
+    }                
+    return $result;
 }
 
 // TODO : test Start
