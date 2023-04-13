@@ -135,6 +135,45 @@ function update_board_info_no(&$param_arr){
     return $result_cnt;
 }
 //----------------------------------
+//함수명 : insert_board_info()
+//기능 : 게시글 생성
+//파라미터값 : 
+//리턴값 : 
+//----------------------------------
+function insert_board_info(&$param_arr){
+    $sql=" INSERT INTO board_info(
+           board_title
+           ,board_contents 
+           ,board_write_date
+           )
+           VALUES(
+           :board_title
+           ,:board_contents
+           ,now()) ";
+
+    $arr_prepare = array(":board_title" => $param_arr["board_title"]
+                         ,":board_contents" => $param_arr["board_contents"]
+                        );
+
+    $conn = null;
+
+    try{
+        db_conn($conn);
+        $conn->beginTransaction();
+        $stmt = $conn->prepare($sql);
+        $result = $stmt->execute($arr_prepare);
+        $conn->commit();
+    }catch(Exception $e){
+        //실패 할 경우 롤백
+        $conn->rollback();
+        return $e->getMessage();
+    }finally{
+        $conn = null;
+    }                
+    return $result;
+}
+
+//----------------------------------
 //함수명 : delete_board_info_no()
 //기능 : 게시판 특정 게시글 정보 삭제
 //파라미터값 : INT &$param_no
@@ -181,3 +220,4 @@ function delete_board_info_no(&$param_no){
 //             ,"board_contents"=> "testeste1");
 // echo update_board_info_no($arr);
 // TODO : test End
+

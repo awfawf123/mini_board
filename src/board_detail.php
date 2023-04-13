@@ -21,15 +21,15 @@ $result_info = select_board_info_no($arr_get["board_no"]);
     <div class="container">
         <h1 class="title">내용</h1>
         <div class="sub-title">
-            <h2>List</h2>
+            <h2>게시글 작성</h2>
                 <span><a href="board_list.php"><img src="home.png" alt=""></a></span>
         </div>
         <div class="inner">
+            <p class="bo_no">글 번호 : <?php echo $result_info["board_no"]?></p>
+            <span>작성일: <?php echo $result_info["board_write_date"]?></span>
             <ul>
-                <li>게시글 번호 : <?php echo $result_info["board_no"]?></li>
-                <li>작성일 : <?php echo $result_info["board_write_date"]?></li>
-                <li>게시글 제목 : <?php echo $result_info["board_title"]?></li>
-                <li>게시글 내용 : <?php echo $result_info["board_contents"]?></li>
+                <li><p>제목</p><?php echo $result_info["board_title"]?></li>
+                <li><p>내용</p><?php echo $result_info["board_contents"]?></li>
             </ul>
             <div class="btn-group">
                 <button class="w-btn" type="button"><a href="board_update.php?board_no=<?php echo $result_info["board_no"]?>">수정</a></button>

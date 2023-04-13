@@ -1,16 +1,14 @@
 <?php
     define("DOC_ROOT",$_SERVER["DOCUMENT_ROOT"]."/");
     define("URL_DB",DOC_ROOT."src/common/db_common.php");
+    define("URL_HEADER",DOC_ROOT."src/board_header.php");
     include_once(URL_DB);
     // var_dump($_SERVER,$_GET,$_POST);
+    //GET방식인지 POST방식인지
     $http_method = $_SERVER["REQUEST_METHOD"];
     // print_r($http_method);
     // print_r($page_num);
-    if(array_key_exists("page_num",$_GET)){
-        $page_num = $_GET["page_num"];
-    }else{
-        $page_num = 1; //key가 없으면 1로 셋팅
-    }
+    
     //GET 체크
     if($http_method  === "GET"){
         $board_no = 1;
@@ -30,7 +28,7 @@
         //update
         $result_cnt = update_board_info_no($arr_info);
         //update후 다시 select
-        // $result_info = select_board_info_no($arr_post["board_no"]); //0412 delete
+        //  $result_info = select_board_info_no($arr_post["board_no"]); //0412 delete
 
         header("Location: board_detail.php?board_no=".$arr_post["board_no"]);
         //redirect 했기 때문에 이후의 소스코드는 실행할 필요 없음
@@ -47,19 +45,29 @@
     <link rel="stylesheet" href="css/board_update.css">
 </head>
 <body>
+    <div class="container">
+    <?php include_once(URL_HEADER)?>
     <form method="post" action="board_update.php">
-            <label for="bno">게시글 번호 :</label>
-            <input type="text" name="board_no" id="bno" value="<?php echo $result_info['board_no']?>" readonly>
-            <br>
-            <label for="title">게시글 제목 :</label>
-            <input type="text" name="board_title" id="title" value="<?php echo $result_info['board_title']?>">
-            <br>
-            <label for="contents">게시글 내용 :</label>
-            <input type="text" name="board_contents" id="contents" value="<?php echo $result_info['board_contents']?>">
-        <br>
-        <button class="w-btn w-btn-blue" type="submit">수정</button>
-        <button class="w-btn w-btn-blue"><a href="board_detail.php?board_no=<?php echo $result_info["board_no"]?>">취소</a></button>
-    </form>
-    <button class="w-btn w-btn-blue"><a href="board_list.php?page_num=<?php echo $page_num?>">LIST</a></button>
+        <div class="inner">
+                <p class="bo_no">글 번호 : <?php echo $result_info["board_no"]?></p>
+                <span>작성일: <?php echo $result_info["board_write_date"]?></span>
+                <ul>
+                    <li>
+                        <p>제목</p>
+                        <input type="text" name="board_title" id="title" value="<?php echo $result_info['board_title']?>">
+                    </li>
+                    <li>
+                        <p>내용</p> 
+                        <input type="textarea" name="board_contents" id="contents" value="<?php echo $result_info['board_contents']?>">
+                    </li>
+                        <input type="hidden" name="board_no"  value="<?php echo $result_info['board_no']?>">
+                </ul>
+                <div class="btn-group">
+                    <button class="w-btn" type="submit">저장</a></button>
+                    <button class="w-btn"><a href="board_detail.php?board_no=<?php echo $result_info["board_no"]?>">취소</a></button>
+                </div>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
