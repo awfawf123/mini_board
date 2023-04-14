@@ -18,7 +18,12 @@ function db_conn(&$param_conn){
         throw new Exception($e->getMessage());
     }
 }
-
+//----------------------------------
+//함수명 : select_board_info_paging()
+//기능 : 게시판 페이징 처리
+//파라미터 : Array $param_arr
+//리턴값 : INT $result
+//----------------------------------
 function select_board_info_paging(&$param_arr){
     $sql=" SELECT board_no
         ,board_title
@@ -46,7 +51,11 @@ function select_board_info_paging(&$param_arr){
   
     return $result;
 }
-
+//----------------------------------
+//함수명 : select_board_info_count()
+//기능 : 게시판 정보글 행 갯수 카운트
+//리턴값 : INT $result
+//----------------------------------
 function select_board_info_count(){
     $sql = " SELECT count(*) cnt
              FROM board_info
@@ -137,8 +146,8 @@ function update_board_info_no(&$param_arr){
 //----------------------------------
 //함수명 : insert_board_info()
 //기능 : 게시글 생성
-//파라미터값 : 
-//리턴값 : 
+//파라미터값 : Array $param_arr
+//리턴값 : Array $result
 //----------------------------------
 function insert_board_info(&$param_arr){
     $sql=" INSERT INTO board_info(
@@ -205,7 +214,44 @@ function delete_board_info_no(&$param_no){
     }                
     return $result;
 }
+//----------------------------------
+//함수명 : select_board_info_search()
+//기능 : 게시판 특정 게시글 정보 검색
+//파라미터값 : Array &$param_arr
+//리턴값 : Array $result
+//----------------------------------
+function select_board_info_search(&$param_arr){
+    $sql=" SELECT board_no
+                  ,board_title
+                  ,board_contents 
+                  ,board_write_date
+            FROM board_info
+            WHERE board_title LIKE CONCAT('%',:board_title,'%')
+            AND board_del_flg ='0'
+            ORDER BY board_no desc
+            LIMIT :limit_num OFFSET :offset
+            ";
 
+    $arr_prepare = array(":board_title" => $param_arr["board_title"]
+                        ,":limit_num" => $param_arr["limit_num"]
+                        ,":offset" => $param_arr["offset"]
+                        );
+
+    $conn = null;
+
+    try{
+        db_conn($conn);
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($arr_prepare);
+        $result = $stmt->fetchAll();
+    }catch(Exception $e){
+        return $e->getMessage();
+    }finally{
+        $conn = null;
+    }                
+  
+    return $result;
+}
 // TODO : test Start
 // $arr = array("limit_num" => 5
 //             ,"offset"    => 0
