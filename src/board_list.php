@@ -10,7 +10,6 @@
     }else{
         $page_num = 1; //key가 없으면 1로 셋팅
     }
-    var_dump($page_num);
     //--------------start 페이징 처리-----------------
     $limit_num = 5; //한 페이지당 n개행만 보여줌
     $page_block = 3; //한 페이지에 보여줄 페이지 갯수
